@@ -12,7 +12,7 @@ public class TempertureConversion {
         System.out.println("Celsius     Fahrenheit");
 
         for (celsius = TABLE_BEGIN; celsius <= TABLE_END; celsius += TABLE_STEP) {
-            //Each iteration prints one line of the conversion table
+            //Each iteration prints one line of the conversion table.
             fahrenheit = celsiusToFahrenheit(celsius);
             System.out.printf("%6.2fC", celsius);
             System.out.printf("%14.2fF\n", fahrenheit);
