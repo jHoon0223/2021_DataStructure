@@ -7,7 +7,7 @@ public class TempertureConversion {
         double celsius;     //A Celsius temperature
         double fahrenheit;  //The equivalent Fahrenheit temperature
 
-        System.out.println("TEMPERARURE CONVERSION");
+        System.out.println("TEMPERATURE CONVERSION");
         System.out.println("----------------------");
         System.out.println("Celsius     Fahrenheit");
 
