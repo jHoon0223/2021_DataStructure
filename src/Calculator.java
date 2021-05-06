@@ -29,10 +29,10 @@ public class Calculator {
         Scanner scanner = new Scanner(System.in);
         Calculator s = new Calculator();
 
-        System.out.print("Infix 수식 입력 : ");
+        System.out.print("Infix 수식 입력 >> ");
         String arr = scanner.nextLine();
 
-        System.out.print("Postfix 변환 결과 : ");
+        System.out.print("Postfix 변환 결과 >> ");
 
         int length = arr.length();
         int curr = 0;
