@@ -39,6 +39,9 @@ public class Calculator {
 
         while (curr <= length) {
             switch (arr.charAt(curr)) {
+                case ' ':
+                    curr++;
+                    break;
                 case '+':
                 case '-':
                 case '*':
