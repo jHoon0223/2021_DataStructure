@@ -28,6 +28,7 @@ public class Calculator {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Calculator s = new Calculator();
+        Calculator postfix = new Calculator();
 
         System.out.print("Infix 수식 입력 >> ");
         String arr = scanner.nextLine();
@@ -38,44 +39,63 @@ public class Calculator {
         int curr = 0;       //현재 커서, 수식 배열을 돌면서 하나씩 판별
 
         while (true) {    //무한루프, 반복문 탈출조건은 따로 명시
-            switch (arr.charAt(curr)) {     //switch문으로 현재 커서 판별
-                case ' ':   //operator가 공백일 경우,
+            switch (arr.charAt(curr)) {     //switch 문으로 현재 커서 판별
+                case ' ':   //operator 가 공백일 경우,
                     curr++;
                     break;  //커서 크기만 증가시키고 break
                 case '+':
                 case '-':
                 case '*':
                 case '/':
-                case '(':   //operator가 +, -, *, /일 경우,
+                case '(':   //operator 가 +, -, *, /일 경우,
                     s.push(arr.charAt(curr));
                     curr++;
-                    break;  //스택에 push하고 커서 크기 증가시킨 후, break
-                case ')':   //operator가 )일 경우,
+                    break;  //스택에 push 하고 커서 크기 증가시킨 후, break
+                case ')':   //operator 가 )일 경우,
                     curr++; //커서 크기 증가
                     while (s.peek() != '(') {
+                        postfix.push(s.peek());
                         System.out.print(s.pop());
-                    }       //(가 나올때까지 스택에 들어있는 원소들 출력
+                    }       //(가 나올때까지 스택에 들어있는 원소들 postfix 스택에 삽입 및 출력
                     s.pop();    //마지막에 남아있는 ( pop
                     break;
                 default:    //연산자가 아닌 숫자일경우,
                     System.out.print(arr.charAt(curr));
+                    postfix.push(arr.charAt(curr));
                     curr++;
-                    break;  //화면에 바로 출력, 커서 크기 증가시키고 break
+                    break;  //화면에 바로 출력, postfix 스택에 삽입, 커서 크기 증가시키고 break
             }
-            if (curr == length) {   //커서의 크기가 length와 같아지면,
-                System.out.print(s.pop());
+            if (curr == length) {   //커서의 크기가 length 와 같아지면,
+                postfix.push(s.peek());
+                System.out.println(s.pop());
                 break;
-            }       // 스택에 마지막으로 남아있는 원소 화면에 출력해주고 반복문 탈출
+            }       // 스택에 마지막으로 남아있는 원소 postfix 스택에 삽입 및 화면에 출력해주고 반복문 탈출
         }
+        //Infix 수식 Postfix 수식으로 변환 및 출력 완료
 
-        /*Calculator s = new Calculator();
+        char oper = ' ';
+        int tmp1, tmp2, sum = 0;
 
-        s.push('+');
-        s.push('-');
-        s.push('*');
-
-        System.out.print(s.pop());
-        System.out.print(s.pop());
-        System.out.print(s.pop());*/
+        for (int i = 0; i < postfix.top; i++) {
+            switch (postfix.peek()) {
+                case '+':
+                case '-':
+                case '*':
+                case '/':
+                    oper = postfix.pop();
+                default:
+                    tmp1 = Character.getNumericValue(postfix.pop());
+                    tmp2 = Character.getNumericValue(postfix.pop());
+                    if (oper == '+')
+                        sum = tmp2 + tmp1;
+                    else if (oper == '-')
+                        sum = tmp2 - tmp1;
+                    else if (oper == '*')
+                        sum = tmp2 * tmp1;
+                    else if (oper == '/')
+                        sum = tmp2 / tmp1;
+            }
+        }
+        System.out.println("Postfix 수식 계산 결과값 >> " + sum);
     }
 }
