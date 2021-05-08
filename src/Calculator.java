@@ -22,13 +22,15 @@ public class Calculator {
     }
 
     char peek() {
-            return stack[top-1];
-        }       //스택에서 원소를 꺼내지 않고, 가장 위에 있는 원소 리턴
+        return stack[top-1];
+    }       //스택에서 원소를 꺼내지 않고, 가장 위에 있는 원소 리턴
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Calculator s = new Calculator();
+        Calculator postfixRe = new Calculator();
         Calculator postfix = new Calculator();
+        Calculator calc = new Calculator();
 
         System.out.print("Infix 수식 입력 >> ");
         String arr = scanner.nextLine();
@@ -54,48 +56,66 @@ public class Calculator {
                 case ')':   //operator 가 )일 경우,
                     curr++; //커서 크기 증가
                     while (s.peek() != '(') {
-                        postfix.push(s.peek());
+                        postfixRe.push(s.peek());
                         System.out.print(s.pop());
-                    }       //(가 나올때까지 스택에 들어있는 원소들 postfix 스택에 삽입 및 출력
+                    }
                     s.pop();    //마지막에 남아있는 ( pop
                     break;
                 default:    //연산자가 아닌 숫자일경우,
                     System.out.print(arr.charAt(curr));
-                    postfix.push(arr.charAt(curr));
+                    postfixRe.push(arr.charAt(curr));
                     curr++;
-                    break;  //화면에 바로 출력, postfix 스택에 삽입, 커서 크기 증가시키고 break
+                    break;
             }
             if (curr == length) {   //커서의 크기가 length 와 같아지면,
-                postfix.push(s.peek());
+                postfixRe.push(s.peek());
                 System.out.println(s.pop());
                 break;
-            }       // 스택에 마지막으로 남아있는 원소 postfix 스택에 삽입 및 화면에 출력해주고 반복문 탈출
+            }
         }
         //Infix 수식 Postfix 수식으로 변환 및 출력 완료
 
-        char oper = ' ';
-        int tmp1, tmp2, sum = 0;
+        int postfixLen = postfixRe.top;
+        int tmp1, tmp2, tmpSum=0, sum=0;
 
-        for (int i = 0; i < postfix.top; i++) {
+        for (int i = 0; i < postfixLen; i++)
+            postfix.push(postfixRe.pop());
+
+        for (int i = 0; i < postfixLen; i++) {
             switch (postfix.peek()) {
                 case '+':
+                    tmp1 = Character.getNumericValue(calc.pop());
+                    tmp2 = Character.getNumericValue(calc.pop());
+                    tmpSum = tmp2 + tmp1;
+                    calc.push((char)tmpSum);
+                    postfix.pop();
+                    break;
                 case '-':
+                    tmp1 = Character.getNumericValue(calc.pop());
+                    tmp2 = Character.getNumericValue(calc.pop());
+                    tmpSum = tmp2 - tmp1;
+                    calc.push((char)tmpSum);
+                    postfix.pop();
+                    break;
                 case '*':
+                    tmp1 = Character.getNumericValue(calc.pop());
+                    tmp2 = Character.getNumericValue(calc.pop());
+                    tmpSum = tmp2 * tmp1;
+                    calc.push((char)tmpSum);
+                    postfix.pop();
+                    break;
                 case '/':
-                    oper = postfix.pop();
+                    tmp1 = Character.getNumericValue(calc.pop());
+                    tmp2 = Character.getNumericValue(calc.pop());
+                    tmpSum = tmp2 / tmp1;
+                    calc.push((char)tmpSum);
+                    postfix.pop();
+                    break;
                 default:
-                    tmp1 = Character.getNumericValue(postfix.pop());
-                    tmp2 = Character.getNumericValue(postfix.pop());
-                    if (oper == '+')
-                        sum = tmp2 + tmp1;
-                    else if (oper == '-')
-                        sum = tmp2 - tmp1;
-                    else if (oper == '*')
-                        sum = tmp2 * tmp1;
-                    else if (oper == '/')
-                        sum = tmp2 / tmp1;
+                    calc.push(postfix.pop());
             }
         }
+        sum = calc.pop();
         System.out.println("Postfix 수식 계산 결과값 >> " + sum);
     }
 }
