@@ -5,6 +5,8 @@ public class Calculator {
     final int CAPACITY = 20;    //스택 최대 크기
     char[] stack = new char[CAPACITY];  //스택
     int top = 0;    //가장 위 원소 번호+1, 스택이 비어있으면 0
+    //top의 초깃값을 -1로 하지 않고 0으로 설정한 이유는
+    // 이후 코드에서 스택의 length를 좀 더 편하게 다루기 위해서이다.
 
     void push (char item) {     //push 함수
         stack[top] = item;      //인자로 받은 item변수를 스택의 가장 위에 넣어줌
@@ -27,10 +29,10 @@ public class Calculator {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Calculator s = new Calculator();
-        Calculator postfixRe = new Calculator();
-        Calculator postfix = new Calculator();
-        Calculator calc = new Calculator();
+        Calculator s = new Calculator();    //postfix 수식을 만들기 위해 사용되는 스택
+        Calculator postfixRe = new Calculator();    //완성된 postfix 수식이 거꾸로 담기게 되는 스택
+        Calculator postfix = new Calculator();      //완성된 postfix 수식이 차례대로 담기는 스택
+        Calculator calc = new Calculator();     //postfix 수식의 결과값을 구하기 위해 사용되는 스택
 
         System.out.print("Infix 수식 입력 >> ");
         String arr = scanner.nextLine();
@@ -42,9 +44,9 @@ public class Calculator {
 
         while (true) {    //무한루프, 반복문 탈출조건은 따로 명시
             switch (arr.charAt(curr)) {     //switch 문으로 현재 커서 판별
-                case ' ':   //operator 가 공백일 경우,
+                case ' ':
                     curr++;
-                    break;  //커서 크기만 증가시키고 break
+                    break;  //operator 가 공백일 경우, 커서 크기만 증가시키고 break
                 case '+':
                 case '-':
                 case '*':
@@ -58,7 +60,7 @@ public class Calculator {
                     while (s.peek() != '(') {
                         postfixRe.push(s.peek());
                         System.out.print(s.pop());
-                    }
+                    }   //( 가 나오기 전까지 스택에 들어있는 인자들 pop
                     s.pop();    //마지막에 남아있는 ( pop
                     break;
                 default:    //연산자가 아닌 숫자일경우,
@@ -66,56 +68,57 @@ public class Calculator {
                     postfixRe.push(arr.charAt(curr));
                     curr++;
                     break;
-            }
+            }   //화면에 바로 출력해주고 curr 증가
             if (curr == length) {   //커서의 크기가 length 와 같아지면,
                 postfixRe.push(s.peek());
                 System.out.println(s.pop());
                 break;
-            }
+            }   //마지막으로 스택에 남아있는 인자 pop 해주고 화면에 출력
         }
         //Infix 수식 Postfix 수식으로 변환 및 출력 완료
 
-        int postfixLen = postfixRe.top;
+        int postfixLen = postfixRe.top;     //postfix 수식의 길이
         int tmp1, tmp2, tmpSum=0, sum=0;
 
         for (int i = 0; i < postfixLen; i++)
-            postfix.push(postfixRe.pop());
+            postfix.push(postfixRe.pop());  //Reverse 로 들어있는 postfix 수식을
+        // 다시 적절한 순서로 postfix 스택에 넣어준다.
 
         for (int i = 0; i < postfixLen; i++) {
-            switch (postfix.peek()) {
+            switch (postfix.peek()) {   //switch 문 안에서 postfix.peek()가 커서 역할
                 case '+':
                     tmp1 = Character.getNumericValue(calc.pop());
                     tmp2 = Character.getNumericValue(calc.pop());
                     tmpSum = tmp2 + tmp1;
                     calc.push((char)tmpSum);
                     postfix.pop();
-                    break;
+                    break;     //operator 가 +일 경우, 숫자 두개를 꺼내서 더해준 다음, 다시 calc 스택에 넣어준다.
                 case '-':
                     tmp1 = Character.getNumericValue(calc.pop());
                     tmp2 = Character.getNumericValue(calc.pop());
                     tmpSum = tmp2 - tmp1;
                     calc.push((char)tmpSum);
                     postfix.pop();
-                    break;
+                    break;     //operator 가 -일 경우, 숫자 두개를 꺼내서 빼준 다음, 다시 calc 스택에 넣어준다.
                 case '*':
                     tmp1 = Character.getNumericValue(calc.pop());
                     tmp2 = Character.getNumericValue(calc.pop());
                     tmpSum = tmp2 * tmp1;
                     calc.push((char)tmpSum);
                     postfix.pop();
-                    break;
+                    break;     //operator 가 *일 경우, 숫자 두개를 꺼내서 곱해준 다음, 다시 calc 스택에 넣어준다.
                 case '/':
                     tmp1 = Character.getNumericValue(calc.pop());
                     tmp2 = Character.getNumericValue(calc.pop());
                     tmpSum = tmp2 / tmp1;
                     calc.push((char)tmpSum);
                     postfix.pop();
-                    break;
+                    break;     //operator 가 /일 경우, 숫자 두개를 꺼내서 나눠준 다음, 다시 calc 스택에 넣어준다.
                 default:
-                    calc.push(postfix.pop());
+                    calc.push(postfix.pop());   //operator 가 아닌 그냥 숫자인 경우, 그냥 calc 스택에 넣어준다.
             }
         }
         sum = calc.pop();
         System.out.println("Postfix 수식 계산 결과값 >> " + sum);
-    }
+    }   //가장 마지막까지 남아있는 숫자가 결과값이니 결과값 sum 최종 출력
 }
