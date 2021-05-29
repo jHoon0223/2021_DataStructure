@@ -51,6 +51,66 @@ public class Sorting {
         a[c] = temp;
     }
 
+    private static int[] sorted;
+
+    static void MergeSort(int[] a) {
+        sorted = new int[a.length];
+        MergeSort(a, 0, a.length-1);
+        sorted = null;
+    }
+
+    static void MergeSort(int[] a, int left, int right) {
+        if(left == right) return;
+
+        int mid = (left + right) / 2;
+
+        MergeSort(a, left, mid);
+        MergeSort(a, mid+1, right);
+
+        merge(a, left, mid, right);
+    }
+
+    private static void merge(int[] a, int left, int mid, int right) {
+        int l = left;
+        int r = mid+1;
+        int index = left;
+
+        while(l <= mid && r <= right) {
+            if(a[l] <= a[r]) {
+                sorted[index] = a[l];
+                index++;
+                l++;
+            }
+            else {
+                sorted[index] = a[r];
+                index++;
+                r++;
+            }
+        }
+
+        if(l > mid) {
+            while(r <= right) {
+                sorted[index] = a[r];
+                index++;
+                r++;
+            }
+        }
+        else {
+            while(l <= mid) {
+                sorted[index] = a[l];
+                index++;
+                l++;
+            }
+        }
+
+        for (int i = 0; i < sorted.length; i++)
+            System.out.print(sorted[i] + " ");
+        System.out.print("\n");
+
+        for (int i = left; i <= right; i++)
+            a[i] = sorted[i];
+    }
+
     public static void main(String[] args) {
         int[] array = {10, 5, 3, 6, 8, 9};
 
@@ -59,6 +119,6 @@ public class Sorting {
             System.out.print(array[i] + " ");
         System.out.print("\n");     //처음 생성된 배열 출력
 
-        SelectionSort(array, array.length);
+        MergeSort(array);
     }
 }
