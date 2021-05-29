@@ -58,7 +58,6 @@ public class Sorting {
         MergeSort(a, 0, a.length-1);
         sorted = null;
     }
-
     static void MergeSort(int[] a, int left, int right) {
         if(left == right) return;
 
@@ -111,6 +110,43 @@ public class Sorting {
             a[i] = sorted[i];
     }
 
+    static void QuickSort(int[] a) {
+        QuickSort(a, 0, a.length-1);
+    }
+    static void QuickSort(int[] a, int low, int high) {
+        if (low >= high)
+            return;
+
+        int pivot = partition(a, low, high);
+
+        QuickSort(a, low, pivot-1);
+        QuickSort(a, pivot+1, high);
+    }
+
+    static int partition(int[] a, int left, int right) {
+        int l = left;
+        int h = right;
+        int pivot = a[left];
+
+        while (l < h) {
+            while(a[h] > pivot && l < h)
+                h--;
+
+            while(a[l] <= pivot && l < h)
+                l++;
+
+            swap(a, l, h);
+        }
+
+        swap(a, left, l);
+
+        for (int i = 0; i < a.length; i++)
+            System.out.print(a[i] + " ");
+        System.out.print("\n");
+
+        return l;
+    }
+
     public static void main(String[] args) {
         int[] array = {10, 5, 3, 6, 8, 9};
 
@@ -119,6 +155,6 @@ public class Sorting {
             System.out.print(array[i] + " ");
         System.out.print("\n");     //처음 생성된 배열 출력
 
-        MergeSort(array);
+        QuickSort(array);
     }
 }
