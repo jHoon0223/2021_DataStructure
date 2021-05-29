@@ -21,6 +21,15 @@ public class Sorting {
         }
     }
 
+    static void SelectionSort(int[] a, int size) {
+        for (int i = size-1; i > 0; i--) {
+            int max = i;
+
+            for (int j = i-1; j >= 0; j)
+        }
+
+    }
+
     public static void main(String[] args) {
         int[] array = {10, 5, 3, 6, 8, 9};
 

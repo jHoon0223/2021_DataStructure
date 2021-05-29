@@ -17,21 +17,21 @@ public class InsertionSort {
             System.out.print(i + "단계 : ");
             for (int k = 0; k < size; k++)
                 System.out.print(a[k] + " ");
-            System.out.print("\n");
+            System.out.print("\n");     //단계별로 출력
         }
     }
 
     public static void main(String[] args) {
-        int[] array = new int[32];
+        int[] array = new int[32];      //배열 생성
 
         for (int i = 0; i < 32; i++)
-            array[i] = (int)(Math.random() * 32);
+            array[i] = (int)(Math.random() * 32);       //생성된 배열에 랜덤하게 수 삽입
 
         System.out.print("랜덤 생성 배열 : ");
         for (int i = 0; i < 32; i++)
             System.out.print(array[i] + " ");
-        System.out.print("\n");
+        System.out.print("\n");     //처음 생성된 배열 출력
 
-        InsertionSort(array, array.length);
+        InsertionSort(array, array.length);     //삽입정렬 실행
     }
 }
