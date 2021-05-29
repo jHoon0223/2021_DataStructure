@@ -1,3 +1,5 @@
+package CHPT12_Sorting;
+
 public class MergeSort {
     private static int[] sorted;
 

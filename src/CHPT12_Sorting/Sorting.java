@@ -1,3 +1,5 @@
+package CHPT12_Sorting;
+
 public class Sorting {
     static void InsertionSort(int[] a) {
         InsertionSort(a, a.length);

@@ -1,3 +1,5 @@
+package CHPT12_Sorting;
+
 public class QuickSort {
     static void QuickSort(int[] a) {
         QuickSort(a, 0, a.length-1);

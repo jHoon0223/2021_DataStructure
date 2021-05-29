@@ -1,3 +1,5 @@
+package CHPT12_Sorting;
+
 public class SelectionSort {
     static void SelectionSort(int[] a) { SelectionSort(a, a.length); }
     static void SelectionSort(int[] a, int size) {
